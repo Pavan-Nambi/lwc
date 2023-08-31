@@ -191,6 +191,16 @@ export function evaluateTemplate(vm: VM, html: Template): VNodes {
                 html
             )}`
         );
+
+        // Check for unusual tags
+        const unusualTags = ['html', 'head', 'body'];
+        unusualTags.forEach((tag) => {
+            if (html.toString().includes(`<${tag}>`)) {
+                // cnsle.warn(`Unusual <${tag}> tag detected in template of ${vm.def.name}.`);
+
+                throw new Error('Unusual tags detected in template. Please use valid LWC syntax.');
+            }
+        });
         // in dev-mode, we support hot swapping of templates, which means that
         // the component instance might be attempting to use an old version of
         // the template, while internally, we have a replacement for it.
